@@ -39,7 +39,25 @@ public static class ArraysTester {
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
-        return new double[0]; // replace this return statement with your own
+
+        // Check for valid inputs
+        if (length <= 0)
+        {
+            Console.WriteLine("Invalid input: length should be a positive integer.");
+            return new double[0]; // Return an empty array
+        }
+
+        // Create an array to store the multiples
+        double[] multiples = new double[length];
+
+        // Generate the multiples and add them to the array
+        for (int i = 0; i < length; i++)
+        {
+            // Calculate the next multiple and add it to the array
+            multiples[i] = number * (i + 1);
+        }
+
+        return multiples;
     }
     
     /// <summary>
@@ -57,5 +75,35 @@ public static class ArraysTester {
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
-    }
+         // Check for valid input conditions
+        if (data == null || amount < 1 || amount > data.Count)
+        {
+            // No rotation is possible, return without making any changes
+            return;
+        }
+
+        // Calculate the split point in the original list
+        int splitPoint = data.Count - amount;
+
+        // Create a temporary list to store the rotated result
+        List<int> rotatedList = new List<int>();
+
+        // Copy elements from the split point to the end to the temporary list
+        for (int i = splitPoint; i < data.Count; i++)
+        {
+            rotatedList.Add(data[i]);
+        }
+
+        // Copy elements from the beginning to the split point to the temporary list
+        for (int i = 0; i < splitPoint; i++)
+        {
+            rotatedList.Add(data[i]);
+        }
+
+        // Copy elements from the temporary list back to the original list
+        for (int i = 0; i < data.Count; i++)
+        {
+            data[i] = rotatedList[i];
+        }
+    } 
 }
