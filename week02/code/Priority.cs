@@ -18,23 +18,48 @@ public static class Priority {
         // Test Cases
 
         // Test 1
-        // Scenario: 
-        // Expected Result: 
-        Console.WriteLine("Test 1");
+        // Scenario: Enqueue items with different priorities and dequeue
+        // Expected Result: Dequeue items in the order of highest priority
 
-        // Defect(s) Found: 
+        Console.WriteLine("Test 1");
+        priorityQueue.Enqueue("Bob", 2);
+        priorityQueue.Enqueue("Sam", 3);
+        priorityQueue.Enqueue("Bill", 1);
+        Console.WriteLine(priorityQueue.Dequeue()); // Expected: Sam
+        Console.WriteLine(priorityQueue.Dequeue()); // Expected: Bob
+        Console.WriteLine(priorityQueue.Dequeue()); // Expected: Bill
+        // Defect(s) Found: The loop condition in the Dequeue method is incorrect. 
 
         Console.WriteLine("---------");
 
         // Test 2
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: Attempt to dequeue from an empty queue
+        // Expected Result: Display an error message
         Console.WriteLine("Test 2");
+         Console.WriteLine(priorityQueue.Dequeue());
 
-        // Defect(s) Found: 
+        // Defect(s) Found:  The code does not handle the case of attempting to dequeue from an empty queue correctly
 
         Console.WriteLine("---------");
 
         // Add more Test Cases As Needed Below
+
+        
+        //Scenario: Two items with the same priority.
+        // Expected Result: Greg
+        //                  [Bob (Pri:2), Bill (Pri:5), Tom (Pri:1)]
+        Console.WriteLine("Test 3");
+        priorityQueue = new PriorityQueue();
+        priorityQueue.Enqueue("Bob", 2);
+        priorityQueue.Enqueue("Greg", 5);
+        priorityQueue.Enqueue("Bill", 5);
+        priorityQueue.Enqueue("Tom", 1);
+
+        Console.WriteLine(priorityQueue.Dequeue());
+        Console.WriteLine(priorityQueue);
+        // Defect(s) Found: Removed the last item that was added to the queue instead of the first.
+
+        Console.WriteLine("---------");
+
     }
 }

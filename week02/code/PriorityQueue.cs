@@ -24,7 +24,9 @@ public class PriorityQueue {
     }
 
     public String Dequeue() {
-        if (_queue.Count == 0) // Verify the queue is not empty
+        int count = _queue.Count;
+
+        if (count == 0 ) // Verify the queue is not empty
         {
             Console.WriteLine("The queue is empty.");
             return null;
@@ -32,13 +34,14 @@ public class PriorityQueue {
 
         // Find the index of the item with the highest priority to remove
         var highPriorityIndex = 0;
-        for (int index = 1; index < _queue.Count - 1; index++) {
-            if (_queue[index].Priority >= _queue[highPriorityIndex].Priority)
+        for (int index = 1; index < _queue.Count; index++) { // Fix loop condition
+            if (_queue[index].Priority > _queue[highPriorityIndex].Priority) // Change to >
                 highPriorityIndex = index;
         }
 
         // Remove and return the item with the highest priority
         var value = _queue[highPriorityIndex].Value;
+        _queue.RemoveAt(highPriorityIndex); // Remove the item from the list
         return value;
     }
 

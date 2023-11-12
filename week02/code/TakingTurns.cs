@@ -26,6 +26,7 @@ public static class TakingTurns {
         while (players.Length > 0)
             players.GetNextPerson();
         // Defect(s) Found: 
+        Console.WriteLine("The turns are not correctly handled for Sue. After the first iteration, Sue should have 2 turns left, but the code incorrectly dequeues her again.");
 
         Console.WriteLine("---------");
 
@@ -49,7 +50,7 @@ public static class TakingTurns {
             players.GetNextPerson();
 
         // Defect(s) Found: 
-
+        Console.WriteLine("Similar to Test 1, the turns for Sue are not correctly handled. After the first iteration, Sue should have 2 turns left, but the code incorrectly dequeues her again.");
         Console.WriteLine("---------");
 
         // Test 3
@@ -67,6 +68,7 @@ public static class TakingTurns {
             // Console.WriteLine(players);
         }
         // Defect(s) Found: 
+        Console.WriteLine("The code doesn't correctly handle the case where a person has an infinite number of turns (Tim with turns set to 0). Tim should not be dequeued after each iteration.");
 
         Console.WriteLine("---------");
 
@@ -77,5 +79,7 @@ public static class TakingTurns {
         players = new TakingTurnsQueue();
         players.GetNextPerson();
         // Defect(s) Found:
+        Console.WriteLine("The code does not correctly handle the case where trying to get the next person from an empty queue. It should display an error message, but the code does not.");
+        Console.WriteLine("---------");
     }
 }
