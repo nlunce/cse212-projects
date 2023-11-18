@@ -1,5 +1,5 @@
 using System.Text.Json;
-
+using System.Data;
 public static class SetsAndMapsTester {
     public static void Run() {
         // Problem 1: Find Pairs with Sets
@@ -111,6 +111,23 @@ public static class SetsAndMapsTester {
         // To display the pair correctly use something like:
         // Console.WriteLine($"{word} & {pair}");
         // Each pair of words should displayed on its own line.
+        HashSet<string> seenWords = new HashSet<string>();
+
+        foreach(var word in words){
+            char[] charArray = word.ToCharArray();
+            Array.Reverse(charArray);
+            string reversedWord = new string(charArray);
+
+            if (seenWords.Contains(reversedWord))
+            {
+                // Display the symmetric pair
+                Console.WriteLine($"{word} & {reversedWord}");
+            }
+            // Add the current word to the set
+            seenWords.Add(word);
+        
+        };
+        
     }
 
     /// <summary>
@@ -132,6 +149,15 @@ public static class SetsAndMapsTester {
         foreach (var line in File.ReadLines(filename)) {
             var fields = line.Split(",");
             // Todo Problem 2 - ADD YOUR CODE HERE
+            string degreeName = fields[3];
+            if (degrees.ContainsKey(degreeName))
+            {
+                degrees[degreeName] += 1;
+            } else
+            {
+                degrees[degreeName] = 1;
+            }
+        
         }
 
         return degrees;
@@ -156,12 +182,76 @@ public static class SetsAndMapsTester {
     /// #############
     /// # Problem 3 #
     /// #############
-    private static bool IsAnagram(string word1, string word2) {
-        // Todo Problem 3 - ADD YOUR CODE HERE
-        return false;
+    private static bool IsAnagram(string word1, string word2){
+        // Create dictionaries to store character frequencies for each word
+        Dictionary<char, int> frequency1 = new Dictionary<char, int>();
+        Dictionary<char, int> frequency2 = new Dictionary<char, int>();
+
+        // Iterate through each character in word1
+        foreach (char c in word1.ToLowerInvariant())
+        {
+            // Ignore spaces
+            if (c != ' ')
+            {
+                // Update the frequency in the dictionary
+                if (frequency1.ContainsKey(c))
+                {
+                    frequency1[c]++;
+                }
+                else
+                {
+                    frequency1[c] = 1;
+                }
+            }
+        }
+
+        // Iterate through each character in word2
+        foreach (char c in word2.ToLowerInvariant())
+        {
+            // Ignore spaces
+            if (c != ' ')
+            {
+                // Update the frequency in the dictionary
+                if (frequency2.ContainsKey(c))
+                {
+                    frequency2[c]++;
+                }
+                else
+                {
+                    frequency2[c] = 1;
+                }
+            }
+        }
+
+        // Compare the two dictionaries to check if they are anagrams
+        foreach (var kvp in frequency1)
+        {
+            char key = kvp.Key;
+            int value1 = kvp.Value;
+
+            if (!frequency2.TryGetValue(key, out int value2) || value1 != value2)
+            {
+                return false;
+            }
+        }
+
+        // Check if frequency2 has any extra keys
+        foreach (var kvp in frequency2)
+        {
+            char key = kvp.Key;
+
+            if (!frequency1.ContainsKey(key))
+            {
+                return false;
+            }
+        }
+
+        // Words are anagrams
+        return true;
     }
 
-    /// <summary>
+
+    /// <summary>   
     /// Sets up the maze dictionary for problem 4
     /// </summary>
     private static Dictionary<ValueTuple<int, int>, bool[]> SetupMazeMap() {
@@ -230,7 +320,23 @@ public static class SetsAndMapsTester {
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
         var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(json, options);
-        // 1. Add your code to map the json to the feature collection object
-        // 2. Print out each place a earthquake has happened today
+
+        DateTime epoch = new(1970, 1, 1, 0, 0 , 0, DateTimeKind.Utc);
+        DateTime now = epoch.AddMilliseconds(featureCollection.metadata.generated);
+        int count = featureCollection.metadata.count;
+        Console.WriteLine
+        (
+            $"As of {now:h:mm tt} UTC, there have been {count} events in the past day."
+        );
+        Console.WriteLine($"{"TIME",-5} {"MAG",-5} {"EVENT",-12} LOCATION");
+      
+        foreach (Feature feature in featureCollection.features)
+        {
+            DateTime time = epoch.AddMilliseconds(feature.properties.time);
+            string magnitude = $"{feature.properties.mag:F2}";
+            string type = feature.properties.type;
+            string place = feature.properties.place;
+            Console.WriteLine($"{time:HH:mm} {magnitude, 5} {type,-12} {place}");
+        }
     }
 }
